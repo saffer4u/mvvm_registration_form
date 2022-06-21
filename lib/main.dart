@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mvvm_registration_form/views/registration_form/address_info.dart';
 import 'package:mvvm_registration_form/views/registration_form/educational_info.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         ),
 
         // Initial Page
-        home: const EducationalInfo(),
+        home: const BasicInfo(),
       ),
     );
   }

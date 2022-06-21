@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mvvm_registration_form/constants/colors.dart';
+import 'package:mvvm_registration_form/views/registration_form/address_info.dart';
 
 import '../../components/enums.dart';
 import '../../utils/custom_red_snakbar.dart';
@@ -18,6 +19,7 @@ class RegistrationViewModel extends ChangeNotifier {
   String intialSelectedYear = "";
   String intialSelectedDesignation = "";
   String intialSelectedDomain = "";
+  String intialSelectedState = "";
 
   //* Dropdown Lists ------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   //* Course Dropdown Lists ----------->>>>>>>>>>>
@@ -37,6 +39,15 @@ class RegistrationViewModel extends ChangeNotifier {
   };
 
   //* Passing Year Dropdown Lists ----------->>>>>>>>>>>
+  List<String> stateList = [
+    "Maharastra",
+    "Gujarat",
+    "Karnataka",
+    "MadhyaPradesh",
+    "Delhi",
+    "Others"
+  ];
+
   List<String> yearList = [
     "2022",
     "2021",
@@ -62,6 +73,7 @@ class RegistrationViewModel extends ChangeNotifier {
   //* Form Keys ---------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   GlobalKey<FormState> basicInfoFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> educationalFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> addressFormKey = GlobalKey<FormState>();
 
   //* TextFormField controllers -------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   TextEditingController firstNameController = TextEditingController();
@@ -72,8 +84,44 @@ class RegistrationViewModel extends ChangeNotifier {
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController gradeController = TextEditingController();
   TextEditingController experienceController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController landmarkController = TextEditingController();
+  TextEditingController pincodeController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
 
   //* Form Validations ------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  String? validAddress(adrs) {
+    if (adrs.toString().length < 3) {
+      return "Please enter your Address";
+    } else {
+      return null;
+    }
+  }
+
+  String? validLandmark(land) {
+    if (land.toString().length < 3) {
+      return "Please enter Nearby Location as Landmark";
+    } else {
+      return null;
+    }
+  }
+
+  String? validCity(city) {
+    if (city.toString().length < 3) {
+      return "Please enter your city";
+    } else {
+      return null;
+    }
+  }
+
+  String? validPinCode(zip) {
+    if (zip.toString().length < 6) {
+      return "Please enter 6 Digit zip code";
+    } else {
+      return null;
+    }
+  }
 
   String? validpassword(String? value) {
     if (value!.length < 6) {
@@ -142,7 +190,7 @@ class RegistrationViewModel extends ChangeNotifier {
   }
 
   bool validateDropDownFields(BuildContext context) {
-    if (intialSelectedCourse==null ||
+    if (intialSelectedCourse == null ||
         intialSelectedYear.isEmpty ||
         intialSelectedDesignation.isEmpty ||
         intialSelectedDomain.isEmpty) {
@@ -176,7 +224,12 @@ class RegistrationViewModel extends ChangeNotifier {
         intialSelectedCourse = key;
       }
     });
-  
+
+    notifyListeners();
+  }
+
+  void stateOnChnage(selectedState) {
+    intialSelectedState = selectedState ?? "";
     notifyListeners();
   }
 
@@ -215,6 +268,23 @@ class RegistrationViewModel extends ChangeNotifier {
     if (validateDropDownFields(context)) {
       if (educationalFormKey.currentState!.validate()) {
         log("Educational info form is valid");
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const AddressInfo(),
+        ));
+      }
+    }
+  }
+
+  void submitButton(BuildContext context) {
+    if (addressFormKey.currentState!.validate()) {
+      if (intialSelectedState.isEmpty) {
+        customRedSnakbar(
+          context: context,
+          title: "Empty Selection Fields",
+          body: "Selection of your state is required",
+        );
+      } else {
+        log("Address form valid");
       }
     }
   }
