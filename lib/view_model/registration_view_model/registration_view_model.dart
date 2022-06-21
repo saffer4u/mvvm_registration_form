@@ -4,10 +4,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mvvm_registration_form/constants/colors.dart';
+import 'package:mvvm_registration_form/model/user.dart';
 import 'package:mvvm_registration_form/views/registration_form/address_info.dart';
 
 import '../../components/enums.dart';
 import '../../utils/custom_red_snakbar.dart';
+import '../../utils/custom_simple_dialog.dart';
 import '../../views/registration_form/educational_info.dart';
 
 class RegistrationViewModel extends ChangeNotifier {
@@ -15,11 +17,11 @@ class RegistrationViewModel extends ChangeNotifier {
   var genderType = Gender.male;
   bool isObscure = true;
   File? pickedImage; // Null if image is not picked
-  Education? intialSelectedCourse;
-  String intialSelectedYear = "";
-  String intialSelectedDesignation = "";
-  String intialSelectedDomain = "";
-  String intialSelectedState = "";
+  Education? initialSelectedCourse;
+  String initialSelectedYear = "";
+  String initialSelectedDesignation = "";
+  String initialSelectedDomain = "";
+  String initialSelectedState = "";
 
   //* Dropdown Lists ------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   //* Course Dropdown Lists ----------->>>>>>>>>>>
@@ -43,7 +45,7 @@ class RegistrationViewModel extends ChangeNotifier {
     "Maharastra",
     "Gujarat",
     "Karnataka",
-    "MadhyaPradesh",
+    "Madhya Pradesh",
     "Delhi",
     "Others"
   ];
@@ -166,7 +168,7 @@ class RegistrationViewModel extends ChangeNotifier {
 
   String? validEmail(email) {
     if (email!.isEmpty || email == null) {
-      return "Email Field cann't be Empty";
+      return "Email Field can't be Empty";
     } else if (!emailRex.hasMatch(email)) {
       return "Enter a valid Email";
     }
@@ -190,10 +192,10 @@ class RegistrationViewModel extends ChangeNotifier {
   }
 
   bool validateDropDownFields(BuildContext context) {
-    if (intialSelectedCourse == null ||
-        intialSelectedYear.isEmpty ||
-        intialSelectedDesignation.isEmpty ||
-        intialSelectedDomain.isEmpty) {
+    if (initialSelectedCourse == null ||
+        initialSelectedYear.isEmpty ||
+        initialSelectedDesignation.isEmpty ||
+        initialSelectedDomain.isEmpty) {
       customRedSnakbar(
         context: context,
         title: "Empty Selection Fields",
@@ -221,7 +223,7 @@ class RegistrationViewModel extends ChangeNotifier {
   void qualificationOnChange(selectedCourse) {
     educationMap.forEach((key, value) {
       if (value == selectedCourse) {
-        intialSelectedCourse = key;
+        initialSelectedCourse = key;
       }
     });
 
@@ -229,22 +231,22 @@ class RegistrationViewModel extends ChangeNotifier {
   }
 
   void stateOnChnage(selectedState) {
-    intialSelectedState = selectedState ?? "";
+    initialSelectedState = selectedState ?? "";
     notifyListeners();
   }
 
   void yearListOnChange(selctedYear) {
-    intialSelectedYear = selctedYear ?? "";
+    initialSelectedYear = selctedYear ?? "";
     notifyListeners();
   }
 
   void designationOnChange(selectedDesignation) {
-    intialSelectedDesignation = selectedDesignation ?? "";
+    initialSelectedDesignation = selectedDesignation ?? "";
     notifyListeners();
   }
 
   void domainOnChange(selectedDomain) {
-    intialSelectedDomain = selectedDomain ?? "";
+    initialSelectedDomain = selectedDomain ?? "";
     notifyListeners();
   }
 
@@ -276,15 +278,49 @@ class RegistrationViewModel extends ChangeNotifier {
   }
 
   void submitButton(BuildContext context) {
+
     if (addressFormKey.currentState!.validate()) {
-      if (intialSelectedState.isEmpty) {
+      if (initialSelectedState.isEmpty) {
         customRedSnakbar(
           context: context,
           title: "Empty Selection Fields",
           body: "Selection of your state is required",
         );
       } else {
+        FocusManager.instance.primaryFocus?.unfocus();
         log("Address form valid");
+
+        User user = User(
+          firstName: firstNameController.text,
+          lastName: lastNameController.text,
+          phoneNo: phoneNoController.text,
+          email: emailController.text,
+          gender: genderType == Gender.male ? "Male" : "Female",
+          password: passwordController.text,
+          qualification: educationMap[initialSelectedCourse]!,
+          passingYear: initialSelectedYear,
+          grade: gradeController.text,
+          yearsOfExperience: experienceController.text,
+          designation: initialSelectedDesignation,
+          domain: initialSelectedDomain,
+          address: addressController.text,
+          landmark: landmarkController.text,
+          city: cityController.text,
+          state: initialSelectedState,
+          pinCode: pincodeController.text,
+        );
+        customSimpleDialog(
+          context: context,
+          okButton: () => Navigator.of(context).pop(),
+          title: const Text(
+            "Your details : ",
+            style: TextStyle(color: DARK_BLUE_COLOR),
+          ),
+          content: Text(
+            user.toString().replaceAll(",", "\n"),
+            style: const TextStyle(color: LIGHT_BLUE_COLOR),
+          ),
+        );
       }
     }
   }

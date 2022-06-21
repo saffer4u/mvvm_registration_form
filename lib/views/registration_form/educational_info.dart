@@ -42,10 +42,11 @@ class EducationalInfo extends StatelessWidget {
                     dropDownListOfItems:
                         rgViewModel.getListOfQualificationString(),
                     onChanged: rgViewModel.qualificationOnChange,
-                    isEmpty:
-                        rgViewModel.intialSelectedCourse == null ? true : false,
+                    isEmpty: rgViewModel.initialSelectedCourse == null
+                        ? true
+                        : false,
                     value: rgViewModel
-                        .educationMap[rgViewModel.intialSelectedCourse],
+                        .educationMap[rgViewModel.initialSelectedCourse],
                   ),
                   CustomDropdownTextFormField(
                     hintText: "Enter Year of Passing",
@@ -53,10 +54,10 @@ class EducationalInfo extends StatelessWidget {
                     dropDownListOfItems: rgViewModel.yearList,
                     onChanged: rgViewModel.yearListOnChange,
                     isEmpty:
-                        rgViewModel.intialSelectedYear.isEmpty ? true : false,
-                    value: rgViewModel.intialSelectedYear.isEmpty
+                        rgViewModel.initialSelectedYear.isEmpty ? true : false,
+                    value: rgViewModel.initialSelectedYear.isEmpty
                         ? null
-                        : rgViewModel.intialSelectedYear,
+                        : rgViewModel.initialSelectedYear,
                   ),
                   CustomTextformField(
                     labelText: "Grade*",
@@ -92,23 +93,24 @@ class EducationalInfo extends StatelessWidget {
                     titleText: "Designatoin*",
                     dropDownListOfItems: rgViewModel.designationlist,
                     onChanged: rgViewModel.designationOnChange,
-                    isEmpty: rgViewModel.intialSelectedDesignation.isEmpty
+                    isEmpty: rgViewModel.initialSelectedDesignation.isEmpty
                         ? true
                         : false,
-                    value: rgViewModel.intialSelectedDesignation.isEmpty
+                    value: rgViewModel.initialSelectedDesignation.isEmpty
                         ? null
-                        : rgViewModel.intialSelectedDesignation,
+                        : rgViewModel.initialSelectedDesignation,
                   ),
                   CustomDropdownTextFormField(
                     hintText: "Select Your Domain",
                     titleText: "Domain*",
                     dropDownListOfItems: rgViewModel.domainList,
                     onChanged: rgViewModel.domainOnChange,
-                    isEmpty:
-                        rgViewModel.intialSelectedDomain.isEmpty ? true : false,
-                    value: rgViewModel.intialSelectedDomain.isEmpty
+                    isEmpty: rgViewModel.initialSelectedDomain.isEmpty
+                        ? true
+                        : false,
+                    value: rgViewModel.initialSelectedDomain.isEmpty
                         ? null
-                        : rgViewModel.intialSelectedDomain,
+                        : rgViewModel.initialSelectedDomain,
                   ),
                   Row(
                     children: [

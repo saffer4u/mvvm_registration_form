@@ -26,15 +26,17 @@ class AddressInfo extends StatelessWidget {
               child: Column(
                 children: [
                   CustomTextformField(
+                    labelText: "Address*",
                     controller: rgViewModel.addressController,
                     validator: (adrs) => rgViewModel.validAddress(adrs),
-                    hintText: "Adress",
+                    hintText: "Address",
                     prefixIcon: const Icon(
                       Icons.location_city_rounded,
                       color: DARK_BLUE_COLOR,
                     ),
                   ),
                   CustomTextformField(
+                    labelText: "Landmark*",
                     controller: rgViewModel.landmarkController,
                     validator: (land) => rgViewModel.validLandmark(land),
                     hintText: "Landmark",
@@ -44,6 +46,7 @@ class AddressInfo extends StatelessWidget {
                     ),
                   ),
                   CustomTextformField(
+                    labelText: "City*",
                     controller: rgViewModel.cityController,
                     validator: (city) => rgViewModel.validCity(city),
                     hintText: "City",
@@ -58,12 +61,13 @@ class AddressInfo extends StatelessWidget {
                     dropDownListOfItems: rgViewModel.stateList,
                     onChanged: rgViewModel.stateOnChnage,
                     isEmpty:
-                        rgViewModel.intialSelectedState.isEmpty ? true : false,
-                    value: rgViewModel.intialSelectedState.isEmpty
+                        rgViewModel.initialSelectedState.isEmpty ? true : false,
+                    value: rgViewModel.initialSelectedState.isEmpty
                         ? null
-                        : rgViewModel.intialSelectedState,
+                        : rgViewModel.initialSelectedState,
                   ),
                   CustomTextformField(
+                    labelText: "Pin Code*",
                     keyboardType: TextInputType.number,
                     controller: rgViewModel.pincodeController,
                     validator: (zip) => rgViewModel.validPinCode(zip),
@@ -74,11 +78,12 @@ class AddressInfo extends StatelessWidget {
                     ),
                   ),
                   CustomButton(
-                      navigation: () => rgViewModel.submitButton(context),
-                      text: "Submit",
-                      textColor: WHITE_COLOR,
-                      border: Border.all(color: DARK_BLUE_COLOR),
-                      backgroundColor: DARK_BLUE_COLOR)
+                    navigation: () => rgViewModel.submitButton(context),
+                    text: "Submit",
+                    textColor: WHITE_COLOR,
+                    border: Border.all(color: DARK_BLUE_COLOR),
+                    backgroundColor: DARK_BLUE_COLOR,
+                  ),
                 ],
               ),
             ),
