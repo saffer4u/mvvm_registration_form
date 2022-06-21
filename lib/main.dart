@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mvvm_registration_form/views/registration_form/address_info.dart';
-import 'package:mvvm_registration_form/views/registration_form/educational_info.dart';
 import 'package:provider/provider.dart';
 
 import 'view_model/registration_view_model/registration_view_model.dart';

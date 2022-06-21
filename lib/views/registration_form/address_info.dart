@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mvvm_registration_form/constants/colors.dart';
+import '../../constants/colors.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/widgets/custom_appbar.dart';
@@ -15,6 +15,7 @@ class AddressInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     RegistrationViewModel rgViewModel = context.watch<RegistrationViewModel>();
     return Scaffold(
+      
       appBar: customAppBar(title: "Your Address"),
       body: Center(
         child: SingleChildScrollView(

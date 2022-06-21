@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mvvm_registration_form/constants/colors.dart';
-import 'package:mvvm_registration_form/model/user.dart';
-import 'package:mvvm_registration_form/views/registration_form/address_info.dart';
+import '../../constants/colors.dart';
+import '../../model/user.dart';
+import '../../views/registration_form/address_info.dart';
 
 import '../../components/enums.dart';
 import '../../utils/custom_red_snakbar.dart';
