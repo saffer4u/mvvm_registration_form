@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mvvm_registration_form/views/registration_form/educational_info.dart';
 import 'package:provider/provider.dart';
 
 import 'view_model/registration_view_model/registration_view_model.dart';
@@ -15,7 +16,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<RegistrationViewModel>(create: (_) => RegistrationViewModel()),
+        ChangeNotifierProvider<RegistrationViewModel>(
+            create: (_) => RegistrationViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
         ),
 
         // Initial Page
-        home: const BasicInfo(),
+        home: const EducationalInfo(),
       ),
     );
   }

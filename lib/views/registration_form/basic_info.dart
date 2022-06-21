@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../components/enums.dart';
 import '../../components/widgets/custom_appbar.dart';
 import '../../components/widgets/custom_button.dart';
 import '../../components/widgets/custom_radio_button.dart';
 import '../../components/widgets/custom_text_form_fileld.dart';
-import '../../components/enums.dart';
 import '../../components/widgets/empty_image_avatar.dart';
 import '../../components/widgets/filled_image_avatar.dart';
 import '../../constants/colors.dart';
@@ -156,16 +156,17 @@ class BasicInfo extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                          child: CustomButton(
-                        // navigation: () => controller.checkNextButton,
-                        navigation: rgViewModel.nextButton,
-                        text: "Next   ",
-                        textColor: Colors.white,
-                        border: Border.all(
-                          color: DARK_BLUE_COLOR,
+                        child: CustomButton(
+                          // navigation: () => controller.checkNextButton,
+                          navigation: ()=>rgViewModel.nextButtonBasic(context),
+                          text: "Next   ",
+                          textColor: Colors.white,
+                          border: Border.all(
+                            color: DARK_BLUE_COLOR,
+                          ),
+                          backgroundColor: DARK_BLUE_COLOR,
                         ),
-                        backgroundColor: DARK_BLUE_COLOR,
-                      )),
+                      ),
                     ],
                   )
                 ],

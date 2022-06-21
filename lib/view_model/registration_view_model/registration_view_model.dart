@@ -3,33 +3,77 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mvvm_registration_form/constants/colors.dart';
 
 import '../../components/enums.dart';
+import '../../utils/custom_red_snakbar.dart';
+import '../../views/registration_form/educational_info.dart';
 
 class RegistrationViewModel extends ChangeNotifier {
-  // Variables --------->>>>>>>>>>
+  //* Variables --------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   var genderType = Gender.male;
   bool isObscure = true;
   File? pickedImage; // Null if image is not picked
+  Education? intialSelectedCourse;
+  String intialSelectedYear = "";
+  String intialSelectedDesignation = "";
+  String intialSelectedDomain = "";
 
-  // Form Keys ---------->>>>>>>>>>>>
+  //* Dropdown Lists ------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  //* Course Dropdown Lists ----------->>>>>>>>>>>
+  // List<String> qualificationList = [
+  //   "B.Tech",
+  //   "B.Pharma",
+  //   "B.A.",
+  //   "M.A.",
+  //   "B.Com.",
+  //   "MBA",
+  // ];
+  Map<Education, String> educationMap = {
+    Education.graduate: "Graduate",
+    Education.hscDiploma: "HSC/Diploma",
+    Education.postGraduate: "Post Graduate",
+    Education.ssc: "SSC",
+  };
+
+  //* Passing Year Dropdown Lists ----------->>>>>>>>>>>
+  List<String> yearList = [
+    "2022",
+    "2021",
+    "2020",
+    "2019",
+    "2018",
+    "2017",
+  ];
+
+  //* Designation Dropdown lists ------------->>>>>>
+  List<String> designationlist = [
+    "CEO",
+    "MD",
+    "Team Lead",
+  ];
+  //* Domain Dropdown lists ------------->>>>>>
+  List<String> domainList = [
+    "Machine Learning",
+    "Robotics",
+    "Data Mining",
+  ];
+
+  //* Form Keys ---------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   GlobalKey<FormState> basicInfoFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> educationalFormKey = GlobalKey<FormState>();
 
-  // TextFormField controllers -------->>>>>>>>>>
+  //* TextFormField controllers -------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController phoneNoController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController gradeController = TextEditingController();
+  TextEditingController experienceController = TextEditingController();
 
-  //Form Validations ------------>>>>>>>>>>
-
-  void nextButton() {
-    if (basicInfoFormKey.currentState!.validate()) {
-      log("Basic info form is valid");
-    }
-  }
+  //* Form Validations ------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
   String? validpassword(String? value) {
     if (value!.length < 6) {
@@ -81,6 +125,100 @@ class RegistrationViewModel extends ChangeNotifier {
     return null;
   }
 
+  String? validExperience(exp) {
+    if (exp.toString().isEmpty) {
+      return "Please Enter your no. of exprienced year.";
+    } else {
+      return null;
+    }
+  }
+
+  String? validGrade(grd) {
+    if (grd.toString().isEmpty) {
+      return "Please enter your grades";
+    } else {
+      return null;
+    }
+  }
+
+  bool validateDropDownFields(BuildContext context) {
+    if (intialSelectedCourse==null ||
+        intialSelectedYear.isEmpty ||
+        intialSelectedDesignation.isEmpty ||
+        intialSelectedDomain.isEmpty) {
+      customRedSnakbar(
+        context: context,
+        title: "Empty Selection Fields",
+        body:
+            "Selection of Educatoin, Year of Passing, Designation and Domain are required.",
+      );
+
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  //* Other Methods ---------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  //* Get list of String from enum ----->>>>
+  List<String> getListOfQualificationString() {
+    List<String> lis = [];
+    educationMap.forEach((key, value) {
+      lis.add(value);
+    });
+    return lis;
+  }
+
+  void qualificationOnChange(selectedCourse) {
+    educationMap.forEach((key, value) {
+      if (value == selectedCourse) {
+        intialSelectedCourse = key;
+      }
+    });
+  
+    notifyListeners();
+  }
+
+  void yearListOnChange(selctedYear) {
+    intialSelectedYear = selctedYear ?? "";
+    notifyListeners();
+  }
+
+  void designationOnChange(selectedDesignation) {
+    intialSelectedDesignation = selectedDesignation ?? "";
+    notifyListeners();
+  }
+
+  void domainOnChange(selectedDomain) {
+    intialSelectedDomain = selectedDomain ?? "";
+    notifyListeners();
+  }
+
+  void nextButtonBasic(BuildContext context) {
+    if (pickedImage == null) {
+      customRedSnakbar(
+          context: context,
+          title: "Profile picture is required",
+          body: "Please select an image.");
+    } else {
+      if (basicInfoFormKey.currentState!.validate()) {
+        log("Basic info form is valid");
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const EducationalInfo(),
+        ));
+      }
+    }
+  }
+
+  void nextButtonEducational(BuildContext context) {
+    if (validateDropDownFields(context)) {
+      if (educationalFormKey.currentState!.validate()) {
+        log("Educational info form is valid");
+      }
+    }
+  }
+
   RegExp emailRex = RegExp(
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
 
@@ -97,8 +235,7 @@ class RegistrationViewModel extends ChangeNotifier {
     genderType = gen;
     notifyListeners();
   }
-
-  // Image Picker for registration form ------>>>>>>>>>
+  //* Image Picker for registration form ------>>>>>>>>>
 
   //* Pic image from camera   ---->>>>>>>>>>>>
   void _openCamera(BuildContext context) async {
@@ -140,7 +277,7 @@ class RegistrationViewModel extends ChangeNotifier {
             title: const Text(
               "Choose option",
               style: TextStyle(
-                color: Color(0xff779FE5),
+                color: LIGHT_BLUE_COLOR,
                 fontFamily: "SofiaPro",
                 fontWeight: FontWeight.bold,
               ),
@@ -156,13 +293,13 @@ class RegistrationViewModel extends ChangeNotifier {
                     title: const Text(
                       "Gallery",
                       style: TextStyle(
-                        color: Color(0xff779FE5),
+                        color: LIGHT_BLUE_COLOR,
                         fontFamily: "SofiaPro",
                       ),
                     ),
                     leading: const Icon(
                       Icons.account_box,
-                      color: Color(0xff779FE5),
+                      color: LIGHT_BLUE_COLOR,
                     ),
                   ),
                   ListTile(
@@ -173,13 +310,13 @@ class RegistrationViewModel extends ChangeNotifier {
                     title: const Text(
                       "Camera",
                       style: TextStyle(
-                        color: Color(0xff779FE5),
+                        color: LIGHT_BLUE_COLOR,
                         fontFamily: "SofiaPro",
                       ),
                     ),
                     leading: const Icon(
                       Icons.camera,
-                      color: Color(0xff779FE5),
+                      color: LIGHT_BLUE_COLOR,
                     ),
                   ),
                 ],
