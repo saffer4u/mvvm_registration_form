@@ -1,16 +1,7 @@
 # mvvm_registration_form
 
-A new Flutter project.
+Registration form with validation using flutter mvvm pattern.
 
-## Getting Started
+<!-- ![Registration App](https://raw.githubusercontent.com/saffer4u/mvvm_registration_form/master/assets/gifimage.gif) -->
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<img src="https://raw.githubusercontent.com/saffer4u/mvvm_registration_form/master/assets/gifimage.gif" alt="drawing" width="300"/>
