@@ -76,7 +76,7 @@ class AddressInfo extends StatelessWidget {
                   CustomButton(
                       navigation: () => rgViewModel.submitButton(context),
                       text: "Submit",
-                      textColor: Colors.white,
+                      textColor: WHITE_COLOR,
                       border: Border.all(color: DARK_BLUE_COLOR),
                       backgroundColor: DARK_BLUE_COLOR)
                 ],
